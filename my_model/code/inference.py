@@ -188,10 +188,11 @@ def predict_fn(input_data, model):
 
         out_data = preds[:, :4] / np.array([width, height, width, height])
         out_class = preds[:, 5:6]
+        out_conf = preds[:, 4:5]
         out_centers = (out_data[:, :2] + out_data[:, 2:4]) / 2
         out_wh = out_data[:, 2:4] - out_data[:, :2]
-        out_data = np.concatenate([out_class, out_centers, out_wh], axis=1)
-
+        out_data = np.concatenate([out_class, out_centers, out_wh, out_conf], axis=1)
+    
     predictions = torch.tensor(out_data, dtype=torch.float32)
     return predictions
 
